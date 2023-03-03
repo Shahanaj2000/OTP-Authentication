@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:phoneauth_firebase/Screens/registrationScreen.dart';
 import 'package:phoneauth_firebase/Widgets/customButton.dart';
 
 
@@ -33,7 +34,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
                 const SizedBox(height: 10,),
                 const Text(
-                  "Never a better time than now to start",
+                  "Never a better time than now to start.",
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.grey,
@@ -46,7 +47,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   width: double.infinity,
                   height: 50,
                   child: CustomButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistrationScreen()));
+                    },
                     text: "Get Started",
   
                   ),
