@@ -2,6 +2,8 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:phoneauth_firebase/Widgets/customButton.dart';
+import 'package:phoneauth_firebase/provider/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -155,7 +157,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   height: 50,
                   child: CustomButton(
                     text: "LogIn",
-                    onPressed: () {},
+                    onPressed: () {
+                      sendPhoneNumber();
+                    },
                   ),
                 )
               ],
@@ -165,4 +169,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       ),
     );
   }
+  //! Sending the phoneNO.
+  void sendPhoneNumber() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    String phoneNumber = phoneController.text.trim();
+    authProvider.sigInWithPhone(context, "+ ${selectedCoutry.phoneCode} $phoneNumber"); 
+  }
+
+
 }

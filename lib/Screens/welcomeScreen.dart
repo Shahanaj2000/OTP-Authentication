@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:phoneauth_firebase/Screens/homeScreen.dart';
 import 'package:phoneauth_firebase/Screens/registrationScreen.dart';
 import 'package:phoneauth_firebase/Widgets/customButton.dart';
-
+import 'package:phoneauth_firebase/provider/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -14,6 +16,9 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
+    //!
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -23,8 +28,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Lottie.network("https://assets10.lottiefiles.com/packages/lf20_mjlh3hcy.json", height: 370,),
-                const SizedBox(height: 20,),
+                Lottie.network(
+                  "https://assets10.lottiefiles.com/packages/lf20_mjlh3hcy.json",
+                  height: 370,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 const Text(
                   "Let's get started",
                   style: TextStyle(
@@ -32,7 +42,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 const Text(
                   "Never a better time than now to start.",
                   style: TextStyle(
@@ -41,17 +53,27 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
                 //! CUSTOM BUTTON
-                 SizedBox(
+                SizedBox(
                   width: double.infinity,
                   height: 50,
                   child: CustomButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistrationScreen()));
+                      authProvider.isSignedIn == true // When its true we fetch the sharedPreference Data
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomeScreen()))
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const RegistrationScreen()));
                     },
                     text: "Get Started",
-  
                   ),
                 )
               ],
