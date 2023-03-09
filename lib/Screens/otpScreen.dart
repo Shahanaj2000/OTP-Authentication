@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:phoneauth_firebase/Screens/homeScreen.dart';
+import 'package:phoneauth_firebase/Widgets/customButton.dart';
 import 'package:pinput/pinput.dart';
 //import 'package:pinput/pinput.dart';
 
@@ -13,6 +15,7 @@ class OTPSCREEN extends StatefulWidget {
 }
 
 class _OTPSCREENState extends State<OTPSCREEN> {
+  String? otpCode;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +73,59 @@ class _OTPSCREENState extends State<OTPSCREEN> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Pinput()
+                 Pinput(
+                  length: 6,
+                  showCursor: true,
+                  defaultPinTheme: PinTheme(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.blue.shade200),
+                    ),
+                    textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  ),
+                  onCompleted: (value) {
+                    setState(() {
+                      otpCode = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20,),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: CustomButton(text: "Verify", onPressed: () {},),
+                ),
+                const SizedBox(height: 15,),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children:  [
+                    const Text(
+                      "Did't received any code ?",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black
+                      ),
+                    ),
+                     const SizedBox(width: 10,),
+                     InkWell(
+                      onTap: () {
+                        //Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
+                      },
+                       child: const Text(
+                        "Resend New Code",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blueAccent
+                        ),
+                       ),
+                     ),
+                  ],
+                )
               ],
             ),
           ),
