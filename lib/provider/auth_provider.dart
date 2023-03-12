@@ -9,6 +9,12 @@ class AuthProvider extends ChangeNotifier {
   bool _isSignedIn = false;
   bool get isSignedIn => _isSignedIn;
 
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
+  String? _uid;
+  String get uid => _uid!;
+
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   AuthProvider() {
@@ -44,4 +50,34 @@ class AuthProvider extends ChangeNotifier {
       showSnackBar(context, e.message.toString());
     }
   }
+
+  //! verifyOtp
+  void veridyOtp({
+    required BuildContext context,
+    required String verificationId,
+    required String userOtp,
+    required Function onSuccess,
+  }) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: userOtp);
+      User? user = (await _firebaseAuth.signInWithCredential(credential)).user!;
+
+      if (user != null) {
+        //Carry Out Logic
+        _uid = user.uid;
+        onSuccess();
+      }
+      _isLoading = false;
+      notifyListeners();
+    } on FirebaseAuthException catch(e) {
+      showSnackBar(context, e.message.toString());
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  
 }
