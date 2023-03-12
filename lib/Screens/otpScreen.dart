@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:phoneauth_firebase/Screens/homeScreen.dart';
+import 'package:phoneauth_firebase/Screens/info.dart';
 import 'package:phoneauth_firebase/Widgets/customButton.dart';
 import 'package:phoneauth_firebase/provider/auth_provider.dart';
 import 'package:phoneauth_firebase/utils/utils.dart';
@@ -168,7 +169,15 @@ class _OTPSCREENState extends State<OTPSCREEN> {
       userOtp: userOtp,
       onSuccess: () {
         // Check whether user existing the DB 
-        
+        authProvider.checkExistingUser().then((value) async {
+          if (value == true) {
+            //User existing our app
+
+          } else {
+            //New user
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const InfoScreen()), (route) => false);
+          }
+        });
       },
     );
   }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:phoneauth_firebase/Screens/otpScreen.dart';
@@ -16,6 +17,7 @@ class AuthProvider extends ChangeNotifier {
   String get uid => _uid!;
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   AuthProvider() {
     checkSignIn();
@@ -76,6 +78,19 @@ class AuthProvider extends ChangeNotifier {
       showSnackBar(context, e.message.toString());
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  //! DB OPERATIONS
+  Future<bool> checkExistingUser() async {
+    DocumentSnapshot snapshot = await _firebaseFirestore.collection("users").doc(_uid).get();
+
+    if (snapshot.exists) {
+      print("USER EXIST");
+      return true;
+    } else {
+      print("NEW USER");
+      return false;
     }
   }
 
